@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Track Your Expense</title>
+     <link rel="icon" type="image/x-icon" href="/favicon.svg">
+    <script type="module" crossorigin src="/assets/index-RaYStSbd.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-B6gV0bgT.css">
+  </head>
+  <body>
+    <main>
+      <h1>Track Your Expense</h1>
+      <div class="expense-tracker">
+        <form class="expense-form">
+          <div class="input-container">
+            <label for="title">Title</label>
+            <input type="text" autocomplete="off" name="title" value="" id="title" />
+          </div>
+          <div class="input-container">
+            <label for="category">Category</label>
+            <input type="text" autocomplete="off" name="category" value="" id="category" />
+          </div>
+          <div class="input-container">
+            <label for="amount">Amount</label>
+            <input type="number" autocomplete="off" name="amount" value="" id="amount" />
+          </div>
+          <button type="submit" class="add-btn">Add</button>
+        </form>
+        <table class="expense-table">
+          <thead>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+        <div class="context-menu">
+          <div id="edit"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+           </svg>
+           </div>
+           <div id="delete"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+           <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+           </svg>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
+
