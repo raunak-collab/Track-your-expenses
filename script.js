@@ -1,19 +1,23 @@
 const contextMenu = document.querySelector(".context-menu");
-const title = document.querySelector("#title");
-const category = document.querySelector("#category");
-const amount = document.querySelector("#amount");
+const Title = document.querySelector("#title");
+const Category = document.querySelector("#category");
+const Amount = document.querySelector("#amount");
 const tbody = document.querySelector("tbody");
 const form = document.querySelector("form");
 const editing = document.getElementById("edit");
 const deleting = document.getElementById("delete");
-const noValue = document.getElementById("no-value");
+
 const heading = document.querySelector("thead");
 const table = document.querySelector("table");
+const amountError = document.getElementById('amount-error');
+const categoryError = document.getElementById('category-error');
+const titleError = document.getElementById('title-error');
 
 let rowId = null;
 let selectedRow = null;
 let selectCategory = "All";
 let filteredData = [];
+
 
 // READING DATA
 function getExpenses() {
@@ -25,29 +29,17 @@ function saveExpenses(data) {
   return localStorage.setItem("expenses", JSON.stringify(data));
 }
 
-// CALCULATING TOTAL AMOUNT
-function TotalAmount(total) {
-  const row = document.createElement("tr");
-  row.innerHTML = `<th>Total</th>
-                     <th></th>
-                     <th>${total}</th>`;
-
-  tbody.appendChild(row);
-}
-
-// FILTER DATA CHECK
-function filterCheck1() {
-  return filteredData.length === 0 && selectCategory !== "All";
-}
-function filterCheck2() {
-  return filteredData.length > 0 && selectCategory !== "All";
-}
 
 // RENDERS DATA
 function renderTable(filterData) {
   tbody.innerHTML = "";
+  titleError.innerText = '';
+  amountError.innerText = '';
+  categoryError.innerText = '';
   const savedData = getExpenses();
   let total = 0;
+
+
 
   if (savedData.length) {
     table.style.backgroundColor = "#32e6e2";
@@ -67,7 +59,6 @@ function renderTable(filterData) {
                <div class="value">Bills</div>
                <div class="value">Education</div>
                <div class="value">Medicine</div>
-             </ul>
             </div>
               </th>
               <th class="amount-column">
@@ -125,9 +116,35 @@ function renderTable(filterData) {
   if (total) {
     TotalAmount(total);
   }
+
 }
 
 renderTable();
+
+// CALCULATING TOTAL AMOUNT
+function TotalAmount(total) {
+  const row = document.createElement("tr");
+  row.innerHTML = `<th>Total</th>
+                     <th></th>
+                     <th>₹ ${total}</th>`;
+
+  tbody.appendChild(row);
+}
+
+// FILTER DATA CHECK
+function filterCheck1() {
+  return filteredData.length === 0 && selectCategory !== "All";
+}
+function filterCheck2() {
+  return filteredData.length > 0 && selectCategory !== "All";
+}
+
+
+function showError(element, message = '') {
+  element.innerText = message;
+}
+
+
 
 
 // SHOWING DATA
@@ -138,7 +155,7 @@ function showData(data) {
 
   row.innerHTML = `<td>${data.title}</td>
                    <td>${data.category}</td>
-                   <td>${data.amount}  <svg class="three-dots" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                   <td>₹ ${data.amount}  <svg class="three-dots" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
   <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
 </svg>
 
@@ -157,7 +174,7 @@ tbody.addEventListener("contextmenu", (e) => {
 
   contextMenu.style.top = `${e.pageY}px`;
   contextMenu.style.left = `${e.pageX}px`
-  contextMenu.classList.toggle('show')
+  contextMenu.classList.add('show')
 });
 
 document.addEventListener("click", () => {
@@ -170,11 +187,16 @@ editing.addEventListener("click", (e) => {
 
   rowId = selectedRow.dataset.id;
 
-  title.value = selectedRow.children[0].innerText;
-  category.value = selectedRow.children[1].innerText;
-  amount.value = selectedRow.children[2].innerText;
+  Title.value = selectedRow.children[0].innerText;
+  Category.value = selectedRow.children[1].innerText;
+  Amount.value = selectedRow.children[2].childNodes[0].textContent.trim();
 
   selectedRow = null;
+
+  titleError.innerText = '';
+  amountError.innerText = '';
+  categoryError.innerText = '';
+
 });
 
 // DELETE
@@ -200,21 +222,62 @@ deleting.addEventListener("click", () => {
   return;
 });
 
+
+// VALIDATE FORM
+const validateConfig = {
+  title: [{ required: true, message: "Please enter title" }, { minLength: 4, message: "Title should be atleast 5 character" }],
+  amount: [{ required: true, message: "Please enter amount" }, { minAmount: 5, message: "Minimum amount should be atleast ₹5" }],
+  category: [{ required: true, message: "Please enter category" }]
+}
+
+function validate(data) {
+
+  let errorsData = {};
+
+  Object.entries(data).forEach(([key, value]) => {
+    validateConfig[key].forEach((rule) => {
+      if (rule.required && value === '') {
+        errorsData[key] = rule.message;
+      }
+      if (rule.minLength && value.length < rule.minLength && value !== '') {
+        errorsData[key] = rule.message
+      }
+      if (rule.minAmount && Number(value) < rule.minAmount && value !== '') {
+        errorsData[key] = rule.message
+      }
+    }
+    )
+  });
+
+
+  if (Object.keys(errorsData).length) {
+
+    showError(categoryError, errorsData.category)
+    showError(amountError, errorsData.amount)
+    showError(titleError, errorsData.title)
+
+    return true;
+  }
+
+}
+
+
 // FORM SUBMIT
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (!title.value.trim() || !category.value.trim() || !amount.value.trim())
+  let ver = validate({ title: Title.value.trim(), category: Category.value.trim(), amount: Amount.value.trim() })
+
+  if (ver) {
     return;
-  if (amount.value <= 0) {
-    alert("Amount must be greater than 0");
   }
 
+
   const expenses = {
-    id: Number(new Date()),
-    title: title.value.trim(),
-    category: category.value.trim(),
-    amount: Number(amount.value.trim()),
+    id: rowId !== null ? Number(rowId) : Number(new Date()),
+    title: Title.value.trim(),
+    category: Category.value.trim(),
+    amount: Number(Amount.value.trim()),
   };
 
   const existing = getExpenses();
@@ -255,14 +318,14 @@ form.addEventListener("submit", (e) => {
 
 
 
-
+// EVENT DELEGATION
 document.addEventListener("click", (e) => {
 
   const dropdown = document.querySelector(".dropdown");
 
   const Target = e.target;
 
-  if (!dropdown.contains(e.target)) {
+  if (dropdown && !dropdown.contains(e.target)) {
     dropdown.classList.remove("active");
   }
 
@@ -290,7 +353,7 @@ document.addEventListener("click", (e) => {
 
 
 
-  if (Target.matches('.dropdown-btn')) {
+  if (Target.closest('.dropdown-btn')) {
     dropdown.classList.toggle("active");
     return;
   }
@@ -299,7 +362,7 @@ document.addEventListener("click", (e) => {
 
 
   //  MODIFY DATA
-  if (Target.matches(".three-dots")) {
+  if (Target.closest(".three-dots")) {
     e.preventDefault();
     selectedRow = Target.closest("tr");
     if (!selectedRow) return;
@@ -309,14 +372,14 @@ document.addEventListener("click", (e) => {
     contextMenu.style.top = `${e.pageY - 10}px`;
     contextMenu.style.left = `${e.pageX - 15}px`
 
-    contextMenu.classList.toggle('show')
+    contextMenu.classList.add('show')
 
     return;
   }
 
 
   // SORTING EXPANSES
-  if (Target.matches(".up-arrow")) {
+  if (Target.closest(".up-arrow")) {
     console.log('upa')
     if (filterCheck1()) return;
     if (filterCheck2()) {
@@ -332,7 +395,7 @@ document.addEventListener("click", (e) => {
 
 
 
-  if (Target.matches(".down-arrow")) {
+  if (Target.closest(".down-arrow")) {
     console.log('sdjah')
     if (filterCheck1()) return;
     if (filterCheck2()) {

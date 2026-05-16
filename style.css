@@ -344,6 +344,11 @@ h3 {
 }
 
 
+#title-error, #amount-error, #category-error{
+    margin-top: 3px;
+    color: rgb(237, 79, 79);
+}
+
 
 @media (max-width: 900px) {
     body {
