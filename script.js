@@ -60,6 +60,7 @@ function renderTable(filterData) {
                <div class="value">Education</div>
                <div class="value">Medicine</div>
             </div>
+            </div>
               </th>
               <th class="amount-column">
                 <div>
