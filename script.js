@@ -41,6 +41,10 @@ function renderTable(filterData) {
 
 
 
+  if (savedData.length === 0) {
+    heading.innerHTML = "";
+  }
+
   if (savedData.length) {
     table.style.backgroundColor = "#32e6e2";
     heading.innerHTML = `<tr>
@@ -190,7 +194,8 @@ editing.addEventListener("click", (e) => {
 
   Title.value = selectedRow.children[0].innerText;
   Category.value = selectedRow.children[1].innerText;
-  Amount.value = selectedRow.children[2].childNodes[0].textContent.trim();
+  Amount.value = selectedRow.children[2].childNodes[0].textContent.split(' ')[1];
+
 
   selectedRow = null;
 
@@ -226,7 +231,7 @@ deleting.addEventListener("click", () => {
 
 // VALIDATE FORM
 const validateConfig = {
-  title: [{ required: true, message: "Please enter title" }, { minLength: 4, message: "Title should be atleast 5 character" }],
+  title: [{ required: true, message: "Please enter title" }, { minLength: 4, message: "Title should be atleast 4 character" }],
   amount: [{ required: true, message: "Please enter amount" }, { minAmount: 5, message: "Minimum amount should be atleast ₹5" }],
   category: [{ required: true, message: "Please enter category" }]
 }
