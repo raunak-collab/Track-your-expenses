@@ -1,0 +1,439 @@
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Nunito:wght@300;400;600;700;800;900&family=Russo+One&family=Spartan:wght@700;800;900&display=swap");
+
+
+
+body {
+    font-family: "Nunito", sans-serif;
+    margin: 0 32px;
+    background-color: #12181f;
+}
+
+.preplaced-extension {
+    display: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin-inline: auto;
+    color: aliceblue;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.expense-tracker {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.expense-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+
+.expense-table {
+    width: 700px;
+    border-collapse: collapse;
+    color: #12181f;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    background-color: #32e6e2;
+}
+
+
+td {
+    font-weight: 500;
+    word-break: break-all;
+}
+
+th:nth-child(1),
+td:nth-child(1) {
+    width: 40%;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    width: 35%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    position: relative;
+    width: 20%;
+}
+
+.three-dots {
+    position: absolute;
+    right: 1px;
+    cursor: pointer;
+}
+
+th {
+    font-weight: 900;
+    background-color: #232e3a;
+    color: whitesmoke;
+}
+
+.expense-table select {
+    font: inherit;
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
+.amount-column div {
+    display: flex;
+    align-items: center;
+}
+
+.amount-column span {
+    margin-right: 6px;
+}
+
+.amount-column {
+    position: relative;
+}
+
+
+.arrow {
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.up-arrow {
+    position: absolute;
+    right: 26px;
+}
+
+.up-arrow:active {
+    transform: translateY(-2px);
+}
+
+.down-arrow {
+    margin-left: 6px;
+    position: absolute;
+    right: 10px;
+}
+
+.down-arrow:active {
+    transform: translateY(2px);
+}
+
+.expense-table th,
+.expense-table td {
+    border: 1px solid #444;
+    text-align: left;
+    padding: 4px 8px;
+}
+
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: #42d9de;
+    color: black;
+
+    padding: 12px 40px 12px 16px;
+
+    border: none;
+    border-radius: 14px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    background-image: url("/dropdown.svg");
+
+    background-repeat: no-repeat;
+
+    background-position: right 15px center;
+
+    background-size: 18px;
+}
+
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-container label {
+    padding-bottom: 2px;
+    font-size: 14px;
+}
+
+.input-container input {
+    border-radius: 15px;
+    padding: 17px 14px;
+    border: none;
+    outline: none;
+    height: 25px;
+    font-family: inherit;
+    background-color: #2d5454;
+    color: white;
+    font-size: 16px;
+    width: 400px;
+}
+
+.add-btn {
+    width: 400px;
+    height: 32px;
+    font-size: 18px;
+    font-family: inherit;
+    background-color: #32e6e2;
+    border-radius: 20px;
+    border: none;
+    color: #12181f;
+    font-weight: bolder;
+    transition: all .3s ease-in-out;
+}
+
+.add-btn:hover {
+    background-color: whitesmoke;
+    color: #12181f;
+}
+
+tr:hover {
+    background-color: #232e3a;
+    color: whitesmoke;
+    transition: all .8s ease-out;
+}
+
+.context-menu {
+    background-color: #32e6e2;
+    color: black;
+    border: 1px solid #232e3a;
+    position: absolute;
+
+    border-radius: 6px;
+    overflow: hidden;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+
+    font-weight: 700;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: scale(0.8);
+
+    transform-origin: top left;
+
+    transition:
+        opacity 0.18s ease,
+        transform 0.18s ease,
+        visibility 0.18s ease;
+
+    z-index: 1000;
+}
+
+.context-menu.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+.context-menu div {
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: all .6s ease;
+    border-bottom: 1px solid #232e3a;
+}
+
+.context-menu div:hover {
+    background-color: #12181f;
+    color: whitesmoke;
+}
+
+.empty-message {
+    padding: 20px;
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+
+
+.dropdown {
+    position: relative;
+    max-width: 200px;
+}
+
+.dropdown-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #268383;
+    border-radius: 12px;
+    background: #32e6e2;
+    color: #282f38;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.dropdown-btn:hover {
+    background: #232e3a;
+    color: white;
+}
+
+.arrow {
+    transition: 0.3s;
+}
+
+.dropdown.active .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: #32e6e2;
+    color: #12181f;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: 0.3s;
+    z-index: 100;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.dropdown.active .dropdown-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.dropdown-menu .value {
+    padding: 6px 25px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dropdown-menu .value:hover {
+    background: #232e3a;
+    color: white;
+}
+
+
+#title-error,
+#amount-error,
+#category-error {
+    margin-top: 3px;
+    color: rgb(237, 79, 79);
+}
+
+
+@media (max-width: 900px) {
+    body {
+        margin-inline: 16px;
+    }
+}
+
+@media (max-width: 730px) {
+    h1 {
+        font-size: 21px;
+    }
+
+    .input-container input {
+        width: 350px;
+    }
+
+    .add-btn {
+        width: 350px;
+        font-size: 15px;
+    }
+
+    .expense-table {
+        width: 550px;
+    }
+
+    td,
+    th {
+        font-size: small;
+    }
+
+    .input-container label {
+        font-size: small;
+    }
+
+    .dropdown-btn {
+        font-size: 12px;
+    }
+
+    .dropdown-menu {
+        font-size: 11px;
+    }
+
+}
+
+@media (max-width: 600px) {
+    .expense-table {
+        width: 350px;
+    }
+
+    td {
+        word-break: break-word;
+        font-weight: 400;
+    }
+
+    th {
+        font-weight: 600;
+    }
+
+    .up-arrow,
+    .down-arrow {
+        width: 7px;
+    }
+
+    .up-arrow {
+        position: absolute;
+        right: 14px;
+    }
+
+    .down-arrow {
+        position: absolute;
+        right: 4px;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        position: relative;
+        width: 23%;
+    }
+
+    .three-dots{
+        width: 16px;
+    }
+
+
+}
