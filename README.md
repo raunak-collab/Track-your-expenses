@@ -13,9 +13,9 @@ A modern expense tracking web app built with React.
 
 ## Tech Stack
 
-- React
+- HTML
 - JavaScript
-- CSS / Tailwind CSS
+- CSS
 - LocalStorage
 
 ## Live Demo
